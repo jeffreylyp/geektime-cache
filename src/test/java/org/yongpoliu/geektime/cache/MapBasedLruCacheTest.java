@@ -1,10 +1,9 @@
 package org.yongpoliu.geektime.cache;
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
-import java.util.List;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.concurrent.TimeUnit;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -28,7 +27,8 @@ public class MapBasedLruCacheTest {
 		// 因为有异步操作，所以做个临时的等待
 		TimeUnit.MILLISECONDS.sleep(10);
 
-		String[] keyArray = cache.dump().toArray(new String[0]);
+		String[] keyArray = cache.dump().keySet().toArray(new String[0]);
+		Arrays.sort(keyArray, Comparator.reverseOrder());
 
 		String[] expectedArray = {"9", "8", "7", "6", "5"};
 		assertArrayEquals(expectedArray, keyArray);

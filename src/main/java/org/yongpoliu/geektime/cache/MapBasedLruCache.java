@@ -1,7 +1,8 @@
 package org.yongpoliu.geektime.cache;
 
+import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -17,9 +18,6 @@ public class MapBasedLruCache<K, V> extends LruCache<K, V> {
 
 	private final Worker worker = new Worker();
 
-	// 减少 dump 对加锁的影响
-	private volatile boolean isDumping = false;
-
 	public MapBasedLruCache(int capacity, Storage<K, V> lowSpeedStorage) {
 		super(capacity, lowSpeedStorage);
 	}
@@ -32,17 +30,9 @@ public class MapBasedLruCache<K, V> extends LruCache<K, V> {
 		this.worker.interrupt();
 	}
 
-	// for testing
-	List<K> dump() {
-
-		this.isDumping = true;
-		try {
-			synchronized (keyList) {
-				return new LinkedList<>(keyList);
-			}
-		} finally {
-			this.isDumping = false;
-		}
+	// just for testing
+	Map<K, V> dump() {
+		return new HashMap<>(m);
 	}
 
 	@Override
@@ -89,13 +79,7 @@ public class MapBasedLruCache<K, V> extends LruCache<K, V> {
 			while (true) {
 				try {
 					Runnable runnable = queue.take();
-					if (isDumping) {
-						synchronized (keyList) {
-							runnable.run();
-						}
-					} else {
-						runnable.run();
-					}
+					runnable.run();
 				} catch (InterruptedException e) {
 					return;
 				}
