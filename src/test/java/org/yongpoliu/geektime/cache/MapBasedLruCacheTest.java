@@ -20,7 +20,7 @@ public class MapBasedLruCacheTest {
 	}
 
 	@Test
-	public void shouldAnswerWithTrue() throws InterruptedException {
+	public void keyListShouldEqual() throws InterruptedException {
 		for (int i = 0; i < 10; i++) {
 			cache.get(i + "");
 		}
