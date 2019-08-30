@@ -2,4 +2,4 @@
 
 #### 核心实现类是 org.yongpoliu.geektime.cache.MapBasedLruCache
 
-#### 对应的测试类是 
+#### 对应的测试类是 org.yongpoliu.geektime.cache.MapBasedLruCacheTest

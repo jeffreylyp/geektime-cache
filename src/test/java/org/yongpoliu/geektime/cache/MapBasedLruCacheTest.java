@@ -12,7 +12,7 @@ import org.junit.Test;
 
 public class MapBasedLruCacheTest {
 
-	static MapBasedLruCache<String, Long> cache = new MapBasedLruCache<>(5, Long::parseLong);
+	private static MapBasedLruCache<String, Long> cache = new MapBasedLruCache<>(5, Long::parseLong);
 
 	@BeforeClass
 	public static void init() {
